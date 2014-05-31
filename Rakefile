@@ -3,6 +3,10 @@ require "open-uri"
 require "archive/zip"
 require "octokit"
 
+# FIXME
+require "openssl"
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 mariadb_version = "10.0.11"
 mroonga_version = "4.03"
 vc_version = "2013"
