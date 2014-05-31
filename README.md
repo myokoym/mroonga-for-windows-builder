@@ -31,3 +31,8 @@ Windows向けのMroonga（MariaDBに同梱）パッケージを作成するス�
   * mysqldを終了
   * zipで圧縮
     * （欲を言うと、ここで、zipのファイル名と展開したときにできるディレクトリー名を同じにしたい）
+
+## FAQ
+
+* Archive::Zip.extractでErrno::ENOENTになるんだけど？
+  * パス名が長すぎるためです。`C:\work\mrn`等で作業すれば成功すると思います。
