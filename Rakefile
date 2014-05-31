@@ -74,7 +74,7 @@ def vc_build(type, architecture)
     sh("cmake ..\\source -G \"#{generator_name}\" > config.log")
     sh("cmake --build . --config RelWithDebInfo > build.log")
     sh("cmake --build . --config RelWithDebInfo --target #{target} > #{type}.log")
-    FileUtils.mv("*.#{type}", "..")
+    FileUtils.mv(Dir.glob("*.#{type}"), "..")
   end
 end
 
