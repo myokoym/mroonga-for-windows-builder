@@ -16,7 +16,7 @@ GEM
       faraday (~> 0.8, < 0.10)
 
 PLATFORMS
-  ruby
+  x86-mingw32
 
 DEPENDENCIES
   archive-zip
