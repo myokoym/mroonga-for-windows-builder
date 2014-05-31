@@ -14,11 +14,11 @@ Windows向けのMroonga（MariaDBに同梱）パッケージを作成するス�
 以下のコマンドを順番に実行してください。
 
 ```bash
-% bundle install
-% rake download  # groonga.orgからソースファイルをダウンロード
-% rake build     # ビルド実行
-% rake rename    # リリース用の名前にリネーム
-%  GITHUB_TOKEN=xxx rake upload  # GitHubのリリースページにアップロード
+> bundle install
+> rake download  # groonga.orgからソースファイルをダウンロード
+> rake build     # ビルド実行
+> rake rename    # リリース用の名前にリネーム
+>  GITHUB_TOKEN=xxx rake upload  # GitHubのリリースページにアップロード
 ```
 
 ## TODO
