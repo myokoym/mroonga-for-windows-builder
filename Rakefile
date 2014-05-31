@@ -49,7 +49,8 @@ end
 
 file "source" do
   puts("Extracting...")
-  Archive::Zip.extract("#{source_name}.zip", "source")
+  Archive::Zip.extract("#{source_name}.zip", ".")
+  FileUtils.mv(source_name, "source")
 end
 
 file "#{build_base_name}.bat" do
