@@ -1,5 +1,8 @@
 /tmp/
 /source/
+/build-*-zip-*/
+/mariadb-*
 /*.zip
 /*.msi
 /*.bat
+*.log
