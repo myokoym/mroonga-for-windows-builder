@@ -34,6 +34,10 @@ def download(url, local_path=nil)
   local_path
 end
 
+def msi_enabled?
+  vc_version == "2010"
+end
+
 desc "Download source file from groonga.org"
 task :download do
   url = "http://packages.groonga.org/source/mroonga/#{source_name}.zip"
@@ -73,7 +77,9 @@ end
 desc "Rename release packages"
 task :rename do
   release_packages.each do |package|
-    next if (vc_version != "2010") && (/.msi\z/ =~ package)
+    if /.msi\z/ =~ package
+      next unless msi_enabled?
+    end
     FileUtils.mv(package.sub(/-with-mroonga-#{mroonga_version}/, ""),
                  package)
   end
@@ -92,7 +98,9 @@ task :upload do
   end
   url = current_release.first.url
   release_packages.each do |package|
-    next if (vc_version != "2010") && (/.msi\z/ =~ package)
+    if /.msi\z/ =~ package
+      next unless msi_enabled?
+    end
     puts("Package name: #{package}")
     puts("Uploading...")
     client.upload_asset(url, package)
