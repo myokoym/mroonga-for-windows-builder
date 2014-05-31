@@ -93,10 +93,10 @@ task :upload do
   access_token = ENV["GITHUB_TOKEN"]
   client = Octokit::Client.new(:access_token => access_token)
   releases = client.releases(repo)
-  current_release = releases.select do |release|
+  current_releases = releases.select do |release|
     release.tag_name == "v#{mroonga_version}"
   end
-  url = current_release.first.url
+  url = current_releases.first.url
   release_packages.each do |package|
     if /.msi\z/ =~ package
       next unless msi_enabled?
