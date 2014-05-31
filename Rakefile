@@ -95,30 +95,33 @@ end
 
 namespace :build do
   desc "Build all targets"
-  task :all => "source" do
-    sh("./build-vc#{vc_version}.bat")
-  end
+  task :all => [
+    "build:win32:zip",
+    "build:winx64:zip",
+    "build:win32:msi",
+    "build:winx64:msi",
+  ]
 
   namespace :win32 do
     desc "Build win32-zip"
-    task :zip do
+    task :zip => "source" do
       vc_build("zip", "32")
     end
 
     desc "Build win32-msi"
-    task :msi do
+    task :msi => "source" do
       vc_build("msi", "32")
     end
   end
 
   namespace :winx64 do
     desc "Build winx64-zip"
-    task :zip do
+    task :zip => "source" do
       vc_build("zip", "64")
     end
 
     desc "Build winx64-msi"
-    task :msi do
+    task :msi => "source" do
       vc_build("msi", "64")
     end
   end
