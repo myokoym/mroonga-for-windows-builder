@@ -127,9 +127,32 @@ namespace :build do
   end
 end
 
+desc "Enable Mroonga as default"
+task :enable_mroonga do
+  release_packages.each do |package|
+    next unless /.zip\z/ =~ package
+    src_name = package.sub(/-with-mroonga-#{mroonga_version}/, "").sub(/\.zip\z/, "")
+    dest_name = package.sub(/\.zip\z/, "")
+    unless File.exist?("#{src_name}.zip")
+      $stderr.puts("Skip: #{src_name}.zip")
+      next
+    end
+    Archive::Zip.extract("#{src_name}.zip", ".")
+    FileUtils.chdir(src_name) do
+      # TODO: run install.sql
+    end
+    FileUtils.mv(src_name, dest_name)
+    Archive::Zip.archive("#{dest_name}.zip", dest_name)
+  end
+end
+
 desc "Rename release packages"
 task :rename do
   release_packages.each do |package|
+    unless File.exist?(package)
+      $stderr.puts("Skip: #{package}")
+      next
+    end
     if /.msi\z/ =~ package
       next unless msi_enabled?
     end
