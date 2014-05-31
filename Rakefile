@@ -3,16 +3,19 @@ require "open-uri"
 require "archive/zip"
 require "octokit"
 
-# FIXME
-require "openssl"
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-
 mariadb_version = "10.0.11"
 mroonga_version = "4.03"
-vc_version = "2013"
 repo = "mroonga/mroonga"
+
+def vc_version
+  vc_version = "2013"
+end
+
+def build_base_name
+  "build-vc#{vc_version}"
+end
+
 source_name = "mariadb-#{mariadb_version}-with-mroonga-#{mroonga_version}-for-windows"
-build_base_name = "build-vc#{vc_version}"
 
 release_packages = [
   "mariadb-#{mariadb_version}-with-mroonga-#{mroonga_version}-win32.zip",
@@ -42,6 +45,39 @@ def msi_enabled?
   vc_version == "2010"
 end
 
+def vc_formal_version
+  case vc_version
+  when "2010"
+    "Visual Studio 10"
+  when "2012"
+    "Visual Studio 11"
+  when "2013"
+    "Visual Studio 12"
+  else
+    raise "Undefined vc_version: #{vc_version}"
+  end
+end
+
+def vc_build(type, architecture)
+  work_dir = "#{build_base_name}-#{type}-#{architecture}"
+  case type
+  when "zip"
+    target = "package"
+  when "msi"
+    target = "msi"
+  end
+  generator_name = vc_formal_version
+  generator_name << " Win64" if architecture == "64"
+  FileUtils.rm_rf(work_dir)
+  FileUtils.mkdir(work_dir)
+  FileUtils.chdir(work_dir) do
+    sh("cmake ..\\source -G \"#{generator_name}\" > config.log")
+    sh("cmake --build . --config RelWithDebInfo > build.log")
+    sh("cmake --build . --config RelWithDebInfo --target #{target} > #{type}.log")
+    FileUtils.mv("*.#{type}", "..")
+  end
+end
+
 desc "Download source file from groonga.org"
 task :download do
   url = "http://packages.groonga.org/source/mroonga/#{source_name}.zip"
@@ -57,26 +93,35 @@ file "source" do
   FileUtils.mv(source_name, "source")
 end
 
-file "#{build_base_name}.bat" do
-  puts("Build scripts: #{build_base_name}*.bat")
-  base_url = "https://raw.githubusercontent.com/mroonga/mroonga/master/packages/windows/"
-  bat_files = [
-    "#{build_base_name}.bat",
-    "#{build_base_name}-zip-32.bat",
-    "#{build_base_name}-zip-64.bat",
-    "#{build_base_name}-msi-32.bat",
-    "#{build_base_name}-msi-64.bat",
-  ]
-  puts("Downloading...")
-  bat_files.each do |bat_file|
-    url = "#{base_url}#{bat_file}"
-    download(url)
+namespace :build do
+  desc "Build all targets"
+  task :all => "source" do
+    sh("./build-vc#{vc_version}.bat")
   end
-end
 
-desc "Build Mroonga for Windows"
-task :build => ["source", "#{build_base_name}.bat"] do
-  sh("./build-vc#{vc_version}.bat")
+  namespace :win32 do
+    desc "Build win32-zip"
+    task :zip do
+      vc_build("zip", "32")
+    end
+
+    desc "Build win32-msi"
+    task :msi do
+      vc_build("msi", "32")
+    end
+  end
+
+  namespace :winx64 do
+    desc "Build winx64-zip"
+    task :zip do
+      vc_build("zip", "64")
+    end
+
+    desc "Build winx64-msi"
+    task :msi do
+      vc_build("msi", "64")
+    end
+  end
 end
 
 desc "Rename release packages"
