@@ -36,3 +36,6 @@ Windows向けのMroonga（MariaDBに同梱）パッケージを作成するス�
 
 * Archive::Zip.extractでErrno::ENOENTになるんだけど？
   * パス名が長すぎるためです。`C:\work\mrn`等で作業すれば成功すると思います。
+* CMakeのバージョンは2.8.12じゃだめ？
+  * PDBまわりのバグがあるのでだめです。CMake 3.0で直るらしいです。
+    * http://www.cmake.org/Bug/bug_relationship_graph.php?bug_id=14600&graph=dependency&orientation=vertical
