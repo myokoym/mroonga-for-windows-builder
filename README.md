@@ -23,6 +23,7 @@ Windows向けのMroonga（MariaDBに同梱）パッケージを作成するス�
 
 ## TODO
 
+* **Windowsで動作確認する**
 * Mroongaをデフォルトで有効にする仕組みを入れる
   * zipを展開
   * 中のmysqldを起動
