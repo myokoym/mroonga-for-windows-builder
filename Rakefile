@@ -150,7 +150,7 @@ task :rename do
   release_packages.each do |release_name|
     raw_name = release_name.sub(/-with-mroonga-#{mroonga_version}/, "")
     unless File.exist?(raw_name)
-      $stderr.puts("Skip: #{raw_name}")
+      $stderr.puts("Warning: #{raw_name} doesn't exist.")
       next
     end
     if /.msi\z/ =~ release_name
