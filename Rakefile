@@ -158,6 +158,7 @@ task :rename do
     end
     FileUtils.mv(raw_name,
                  release_name)
+    puts("Renamed #{raw_name} to #{release_name}")
   end
 end
 
