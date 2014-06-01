@@ -8,7 +8,7 @@ mroonga_version = "4.03"
 repo = "mroonga/mroonga"
 
 def vc_version
-  vc_version = "2013"
+  "2013"
 end
 
 def build_base_name
