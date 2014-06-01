@@ -18,7 +18,8 @@ Windows向けのMroonga（MariaDBに同梱）パッケージを作成するス�
 > rake download   # groonga.orgからソースファイルをダウンロード
 > rake build:all  # ビルド実行
 > rake rename     # リリース用の名前にリネーム
->  GITHUB_TOKEN=xxx rake upload  # GitHubのリリースページにアップロード
+> set GITHUB_TOKEN=xxx  # 環境変数にGitHubトークンを設定
+> rake upload     # GitHubのリリースページにアップロード
 ```
 
 ## TODO
