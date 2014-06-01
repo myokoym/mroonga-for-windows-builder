@@ -147,16 +147,16 @@ end
 
 desc "Rename release packages"
 task :rename do
-  release_packages.each do |package|
-    unless File.exist?(package)
-      $stderr.puts("Skip: #{package}")
+  release_packages.each do |release_name|
+    unless File.exist?(release_name)
+      $stderr.puts("Skip: #{release_name}")
       next
     end
-    if /.msi\z/ =~ package
+    if /.msi\z/ =~ release_name
       next unless msi_enabled?
     end
-    FileUtils.mv(package.sub(/-with-mroonga-#{mroonga_version}/, ""),
-                 package)
+    FileUtils.mv(release_name.sub(/-with-mroonga-#{mroonga_version}/, ""),
+                 release_name)
   end
 end
 
