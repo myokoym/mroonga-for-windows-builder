@@ -81,7 +81,6 @@ end
 desc "Download source file from groonga.org"
 task :download do
   url = "http://packages.groonga.org/source/mroonga/#{source_name}.zip"
-  local_path = File.basename(url)
   puts("Source file: #{url}")
   puts("Downloading...")
   download(url)
