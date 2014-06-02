@@ -142,6 +142,7 @@ task :enable_mroonga do
       $stderr.puts("Skip: #{src_name}.zip")
       next
     end
+    puts("Extracting...")
     Archive::Zip.extract("#{src_name}.zip", ".")
     FileUtils.chdir(src_name) do
       mysqld_thread = Thread.new do
@@ -152,6 +153,7 @@ task :enable_mroonga do
       mysqld_thread.join
     end
     FileUtils.mv(src_name, dest_name)
+    puts("Archiving...")
     Archive::Zip.archive("#{dest_name}.zip", dest_name)
   end
 end
