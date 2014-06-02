@@ -27,21 +27,15 @@ Rakefileの先頭に記述してある以下のバージョンを確認し、必
 > bundle install
 > rake download         # groonga.orgからソースファイルをダウンロード
 > rake build:all        # ビルド実行
-> rake rename           # リリース用の名前にリネーム
+> rake enable_mroonga   # Mroongaをデフォルトで有効にする（ZIP用）
+> rake rename           # リリース用の名前にリネーム（MSI用）
 > set GITHUB_TOKEN=xxx  # 環境変数にGitHubトークンを設定
 > rake upload           # GitHubのリリースページにアップロード
 ```
 
 ## TODO
 
-* **Windowsで動作確認する**
-* Mroongaをデフォルトで有効にする仕組みを入れる
-  * zipを展開
-  * 中のmysqldを起動
-  * mysqlで中にあるshare/mroonga/install.sqlを実行
-  * mysqldを終了
-  * zipで圧縮
-    * （欲を言うと、ここで、zipのファイル名と展開したときにできるディレクトリー名を同じにしたい）
+* zipファイルの動作確認
 
 ## FAQ
 

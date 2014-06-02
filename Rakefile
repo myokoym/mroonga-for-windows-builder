@@ -138,7 +138,12 @@ task :enable_mroonga do
     end
     Archive::Zip.extract("#{src_name}.zip", ".")
     FileUtils.chdir(src_name) do
-      # TODO: run install.sql
+      mysqld_thread = Thread.new do
+        sh("bin\\mysqld.exe", "--console")
+      end
+      sh("bin\\mysql.exe -uroot < share\\mroonga\\install.sql")
+      sh("bin\\mysqladmin.exe", "-uroot", "shutdown")
+      mysqld_thread.join
     end
     FileUtils.mv(src_name, dest_name)
     Archive::Zip.archive("#{dest_name}.zip", dest_name)
