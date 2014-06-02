@@ -27,6 +27,7 @@ Rakefileの先頭に記述してある以下のバージョンを確認し、必
 > gem install bundler   # 初回のみ
 > bundle install        # 初回のみ
 > rake download         # groonga.orgからソースファイルをダウンロード
+> rake clean            # sourceフォルダーを削除（再ダウンロード時に使用）
 > rake build:all        # ビルド実行
 > rake enable_mroonga   # Mroongaをデフォルトで有効にする（ZIP用）
 > rake rename           # リリース用の名前にリネーム（MSI用）

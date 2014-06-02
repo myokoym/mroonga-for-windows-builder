@@ -82,6 +82,16 @@ task :download do
   download(url)
 end
 
+desc "Clean source directory"
+task :clean do
+  unless File.exist?("source")
+    $stderr.puts("Warning: .\\source doesn't exist.")
+    next
+  end
+  puts("Cleaning...")
+  FileUtils.rm_rf("source")
+end
+
 file "source" do
   puts("Extracting...")
   Archive::Zip.extract("#{source_name}.zip", ".")
