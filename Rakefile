@@ -41,10 +41,6 @@ def download(url, local_path=nil)
   local_path
 end
 
-def msi_enabled?
-  vc_version == "2010"
-end
-
 def vc_formal_version
   case vc_version
   when "2010"
@@ -126,7 +122,7 @@ namespace :build do
   end
 end
 
-desc "Enable Mroonga as default"
+desc "Enable Mroonga as default for ZIP"
 task :enable_mroonga do
   release_packages.each do |package|
     next unless /.zip\z/ =~ package
@@ -150,12 +146,10 @@ task :enable_mroonga do
   end
 end
 
-desc "Rename release packages"
+desc "Rename release packages for MSI"
 task :rename do
   release_packages.each do |release_name|
-    if /.msi\z/ =~ release_name
-      next unless msi_enabled?
-    end
+    next unless /.msi\z/ =~ release_name
     raw_name = release_name.sub(/-with-mroonga-#{mroonga_version}/, "")
     unless File.exist?(raw_name)
       $stderr.puts("Warning: #{raw_name} doesn't exist.")
@@ -180,8 +174,9 @@ task :upload do
   end
   url = current_releases.first.url
   release_packages.each do |package|
-    if /.msi\z/ =~ package
-      next unless msi_enabled?
+    unless File.exist?(package)
+      $stderr.puts("Warning: #{package} doesn't exist.")
+      next
     end
     puts("Package name: #{package}")
     puts("Uploading...")
