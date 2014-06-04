@@ -77,8 +77,7 @@ end
 desc "Download source file from groonga.org"
 task :download do
   url = "http://packages.groonga.org/source/mroonga/#{source_name}.zip"
-  puts("Source file: #{url}")
-  puts("Downloading...")
+  puts("Downloading #{url}")
   download(url)
 end
 
@@ -88,12 +87,12 @@ task :clean do
     $stderr.puts("Warning: .\\source doesn't exist.")
     next
   end
-  puts("Cleaning...")
+  puts("Cleaning .\\source")
   FileUtils.rm_rf("source")
 end
 
 file "source" do
-  puts("Extracting...")
+  puts("Extracting #{source_name}")
   Archive::Zip.extract("#{source_name}.zip", ".")
   FileUtils.mv(source_name, "source")
 end
@@ -142,7 +141,7 @@ task :enable_mroonga do
       $stderr.puts("Skip: #{src_name}.zip")
       next
     end
-    puts("Extracting...")
+    puts("Extracting #{src_name}")
     Archive::Zip.extract("#{src_name}.zip", ".")
     FileUtils.chdir(src_name) do
       mysqld_thread = Thread.new do
@@ -153,7 +152,8 @@ task :enable_mroonga do
       mysqld_thread.join
     end
     FileUtils.mv(src_name, dest_name)
-    puts("Archiving...")
+    puts("Renamed #{src_name} to #{dest_name}")
+    puts("Archiving #{dest_name}")
     Archive::Zip.archive("#{dest_name}.zip", dest_name)
   end
 end
@@ -190,8 +190,7 @@ task :upload do
       $stderr.puts("Warning: #{package} doesn't exist.")
       next
     end
-    puts("Package name: #{package}")
-    puts("Uploading...")
+    puts("Uploading #{package}")
     client.upload_asset(url, package)
   end
 end
