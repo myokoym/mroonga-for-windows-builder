@@ -3,8 +3,8 @@ require "open-uri"
 require "archive/zip"
 require "octokit"
 
-mariadb_version = "10.0.11"
-mroonga_version = "4.03"
+mariadb_version = "10.0.12"
+mroonga_version = "4.04"
 repo = "mroonga/mroonga"
 
 def vc_version
